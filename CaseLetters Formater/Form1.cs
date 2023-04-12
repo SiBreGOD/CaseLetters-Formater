@@ -25,6 +25,7 @@ namespace CaseLetters_Formater
         public Form1()
         {
             InitializeComponent();
+            this.Icon = Properties.Resources.font;
         }
 
         private void Form1_Load(object sender, EventArgs e)
