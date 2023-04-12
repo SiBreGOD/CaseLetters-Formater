@@ -16,7 +16,7 @@ namespace CaseLetters_Formater
 
             if(!string.IsNullOrEmpty(text))
             {
-                result = string.Join(" ", words.Select(word => char.ToUpper(word[0]) + word.Substring(1)));
+                result = string.Join(" ", words.Select(word => char.ToUpper(word[0]) + (word.Substring(1)).ToLower()));
             }
 
             return result;
