@@ -16,6 +16,7 @@ namespace CaseLetters_Formater
     {
         const int CONST_update_intervall = 1000;
         string text;
+        bool is_changed = false;
         private BackgroundWorker bw_manager;
         private readonly List<BackgroundWorker> bw_tasks = new List<BackgroundWorker>();
         internal delegate void thisforms_void();
@@ -36,7 +37,12 @@ namespace CaseLetters_Formater
 
         private void _richtextboxInput_update ()
         {
-            text = richTextBoxInput.Text;
+            if (!is_changed)
+                if (text != richTextBoxInput.Text)
+                {
+                    is_changed = true;
+                    text = richTextBoxInput.Text;
+                }
         }
         private void _richtextboxOutput_update(string text)
         {
@@ -63,13 +69,19 @@ namespace CaseLetters_Formater
         {
             thisforms_void update = new thisforms_void(_richtextboxInput_update);
             this.BeginInvoke(update);
-            string result = "";
-            e.Result = Formater.UpperFirstLetter(text);
+            if (is_changed)
+            {
+                e.Result = Formater.UpperFirstLetter(text);
+            }
         }
         private void _BW_update_output_richtextbox (object sender, RunWorkerCompletedEventArgs e)
         {
-            thisforms_string update = new thisforms_string(_richtextboxOutput_update);
-            this.BeginInvoke(update, e.Result);
+            if (is_changed)
+            {
+                is_changed = false;
+                thisforms_string update = new thisforms_string(_richtextboxOutput_update);
+                this.BeginInvoke(update, e.Result);
+            }
         }
     }
 }
